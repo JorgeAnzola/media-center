@@ -1,5 +1,8 @@
 name: Create Release
-on: [ push ]
+on:
+  push:
+    branches:
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,11 +14,11 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: 'release.zip'
+          filename: 'media-center.zip'
           exclusions: '*.git* /*node_modules/* .editorconfig'
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
           commit: master
-          artifacts: "release.zip"
+          artifacts: "media-center.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
