@@ -20,10 +20,12 @@
 # Table of Contents
 
 - [Included software](#included-software)
-- [Installation](#installation)
+- [Requirements](#requirements)
 - [Getting started](#getting-started)
     - [Configuration](#configuration)
-
+    - [Booting up](#booting-up)
+    - [Automatic start](#automatic-start)
+    - [Going extra](#going-extra)
 
 # Included software
 
@@ -139,6 +141,48 @@ Tautulli is a 3rd party application that you can run alongside your Plex Media S
     <br/>
 </div>
 
-# Installation
+# Requirements
+- Docker Compose
+
+
 # Getting started
+
+Clone or download this repo into your home folder.
+
+```
+cd ~
+git clone https://github.com/JorgeAnzola/media-center.git (or download the [latest release](https://github.com/JorgeAnzola/media-center/releases/latest/download/media-center.zip))
+cd media-center
+cp docker-compose.yaml.example docker-compose.yaml
+```
+
 ## Configuration
+If you've cloned the repo in a folder different than `~/media-center/` you'd need to double check a couple of things in the newly created `docker-compose.yaml` file before booting up.
+You need to make sure all the `/data` paths (like `/data/torrents/` and `/data/media/movies`) are pointing to the right folders. 
+
+## Booting up
+
+```
+cd ~/media-center
+docker-compose up -d
+```
+
+## Automatic start
+You'd probably like your media center to start automatically after restarting.
+To do that
+
+```
+crontab -e
+```
+
+and add the following line
+
+```
+@reboot docker-compose -f ~/media-center/docker-compose.yaml up -d
+```
+
+# Going extra
+You will now have 6 software running on your system or server.
+You can use an app dashboard like [Homer](https://github.com/JorgeAnzola/homer-dashboard).
+
+<img src="https://raw.githubusercontent.com/JorgeAnzola/homer-dashboard/master/assets/readme/dark.jpg">
