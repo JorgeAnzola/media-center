@@ -5,3 +5,4 @@
 workspace.xml
 .DS_Store
 !.gitkeep
+docker-compose.yaml

@@ -11,14 +11,14 @@ services:
       - TRANSMISSION_WEB_HOME=/combustion-release/
     volumes:
       - ~/media-center/transmission/config:/config
-      - /media/jorgeanzola/EXTRA/data/torrents:/data/torrents
-      - /media/jorgeanzola/EXTRA/data/torrents/watch:/watch
+      - ~/media-center/data/torrents:/data/torrents
+      - ~/media-center/data/torrents/watch:/watch
     ports:
       - 9091:9091
       - 51413:51413
       - 51413:51413/udp
     restart: unless-stopped
-    
+
   plex:
     image: ghcr.io/linuxserver/plex
     container_name: plex
@@ -29,10 +29,10 @@ services:
       - VERSION=docker
     volumes:
       - ~/media-center/plex/config:/config
-      - /media/jorgeanzola/EXTRA/data/media/tv:/tv
-      - /media/jorgeanzola/EXTRA/data/media/movies:/movies
+      - ~/media-center/data/media/tv:/tv
+      - ~/media-center/data/media/movies:/movies
     restart: unless-stopped
-    
+
   radarr:
     image: ghcr.io/linuxserver/radarr
     container_name: radarr
@@ -42,11 +42,11 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - ~/media-center/radarr/config:/config
-      - /media/jorgeanzola/EXTRA/data:/data
+      - ~/media-center/data:/data
     ports:
       - 7878:7878
     restart: unless-stopped
-    
+
   sonarr:
     image: ghcr.io/linuxserver/sonarr
     container_name: sonarr
@@ -56,11 +56,11 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - ~/media-center/sonarr/config:/config
-      - /media/jorgeanzola/EXTRA/data:/data
+      - ~/media-center/data:/data
     ports:
       - 8989:8989
     restart: unless-stopped
-    
+
   jackett:
     image: ghcr.io/linuxserver/jackett
     container_name: jackett
