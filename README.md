@@ -8,7 +8,7 @@
 </h1>
 
 <h4 align="center">
-	A dead simple dockerized media center bundle with everything you might need (Probably).
+	A dead simple dockerized 15-minutes-to-setup media center bundle with everything you might need (Probably).
 </h4>
 
 <p align="center">
@@ -22,10 +22,19 @@
 - [Included software](#included-software)
 - [Requirements](#requirements)
 - [Getting started](#getting-started)
+    - [Installation](#installation)
     - [Configuration](#configuration)
+      - [Setting up Transmission](#setting-up-transmission)
+      - [Setting up Jackett](#setting-up-jackett)
+      - [Setting up Radarr/Sonarr](#setting-up-radarr-sonarr)
+      - [Setting up Plex](#setting-up-plex)
+      - [Setting up Tautulli](#setting-up-tautulli)
     - [Booting up](#booting-up)
     - [Automatic start](#automatic-start)
-    - [Going extra](#going-extra)
+- [Going extra](#going-extra)
+  - [Dashboard](#dashboard)
+- [Trouble shooting](#trouble-shooting)
+  - [Plex not booting up](#plex-not-booting-up)
 
 # Included software
 
@@ -144,14 +153,18 @@ Tautulli is a 3rd party application that you can run alongside your Plex Media S
 # Requirements
 - Docker Compose
 
+With Docker should work on most cases and systems but it has been tested on a server with Ubuntu 20.04 and on a Raspberry 4b, working as expected.
+Plex was a bit rough on the Raspberry, especially when trying to stream 4k media.  
 
 # Getting started
+
+## Installation
 
 Clone or download this repo into your home folder.
 
 ```
 cd ~
-git clone https://github.com/JorgeAnzola/media-center.git (or download the [latest release](https://github.com/JorgeAnzola/media-center/releases/latest/download/media-center.zip))
+git clone https://github.com/JorgeAnzola/media-center.git # (or download the [latest release](https://github.com/JorgeAnzola/media-center/releases/latest/download/media-center.zip))
 cd media-center
 cp docker-compose.yaml.example docker-compose.yaml
 ```
@@ -159,6 +172,68 @@ cp docker-compose.yaml.example docker-compose.yaml
 ## Configuration
 If you've cloned the repo in a folder different than `~/media-center/` you'd need to double check a couple of things in the newly created `docker-compose.yaml` file before booting up.
 You need to make sure all the `/data` paths (like `/data/torrents/` and `/data/media/movies`) are pointing to the right folders. 
+
+Furthermore, each app require some minor configuration steps
+
+### Setting up Transmission
+No extra configuration should be required for Transmission.
+
+### Setting up Jackett
+Not really setting up Jackett, but to add the indexers. Go to http://your-server-ip-address:9117.
+Click the **Add indexer** button, a frame will popup, in there look for the provider you'd like to add and click the plus button.
+You can add as many as you want.
+
+You can copy the indexer URL by clicking the **Copy Torznab Feed**
+
+### Setting up Radarr/Sonarr
+The guide refers to Radarr, but all these settings you can be (and need to be) replicated on Sonarr.
+
+#### Adding Indexers
+
+- Go into Settings > Indexers
+- Click the Plus button.
+- Click the Torznab button
+- Add a name
+- Add the URL copied from Jackett. You can replace the IP address with the word `jackett` as they are in the same Docker network
+- Add the API key from Jackett.
+- Select the proper categories.
+- Click test to make sure everything is ok.
+- Click save
+- Repeat for all the indexers you have
+
+#### Add a download client (Transmission)
+
+- Go into Settings > Download Clients
+- Click the Plus button.
+- Click on the Transmission button
+- Add a name
+- For the host, replace `localhost` for `transmission`
+- Click test to make sure everything is ok.
+- Click save
+
+#### Add a root folder
+- Go into Settings > Media Management
+- Scroll down to Root Folders
+- Click on Add Root Folder
+- Select the folder data/media/movies (data/media/tv for Sonarr)
+
+#### Trakt/IMDB lists (Optional) 
+If you use IMDB or Trakt.tv to keep lists of movies and shows you can integrate them to Radarr/Sonarr
+And everything you add there will be downloaded automatically. You can define different quality profiles for each lists and much more.
+
+#### Size limit (Optional)
+With all these automagic things going on, might happen that Radarr tries to download a 60gb 1080p movie.
+If you like to avoid this, you can set up your quality preferences (Settings > Quality), or directly in the indexers, go into Settings > Indexers and set up a **Maximum Size**.
+
+### Setting up Plex
+Go through the wizard for the time first configuration, and create an account if you don't have one.
+Add libraries: Films pointing to `media/movies` and TV Shows pointing to `data/tv`
+In the settings you can also set for the libraries to be updated as soon as there's a change in the files.
+
+### Setting up Tautulli
+Go through the wizard for the time first configuration, set up user and password and sign in with your Plex account.
+In Tautulli you have many settings and features. One of the most useful are the notifications.
+Go into Settings > Notification Agents. Here you can add many notifications with many triggers. For example, a Telegram notification when there's a new movie to watch.
 
 ## Booting up
 
@@ -182,7 +257,19 @@ and add the following line
 ```
 
 # Going extra
+## Dashboard
 You will now have 6 software running on your system or server.
 You can use an app dashboard like [Homer](https://github.com/JorgeAnzola/homer-dashboard).
 
 <img src="https://raw.githubusercontent.com/JorgeAnzola/homer-dashboard/master/assets/readme/dark.jpg">
+
+# Trouble shooting
+## Plex not booting up 
+If you're installing the media center in a Raspberry Pi with Raspbian, you might encounter the problem of having an out of date `libseccomp` component.
+To fix this manually install an updated version of the library with dpkg. [More info](https://docs.linuxserver.io/faq#libseccomp)
+
+```
+wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.4.4-1~bpo10+1_armhf.deb
+sudo dpkg -i libseccomp2_2.4.4-1~bpo10+1_armhf.deb
+```
+  
