@@ -31,6 +31,7 @@
       - [Setting up Tautulli](#setting-up-tautulli)
     - [Booting up](#booting-up)
     - [Automatic start](#automatic-start)
+    - [Updating the images](#updating-the-images)
 - [Going extra](#going-extra)
   - [Dashboard](#dashboard)
 - [Trouble shooting](#trouble-shooting)
@@ -255,6 +256,23 @@ and add the following line
 ```
 @reboot docker-compose -f ~/media-center/docker-compose.yaml up -d
 ```
+
+## Updating the images
+
+You can pull each docker image manually or use the included script:
+
+```
+cd ~/media-center/
+./update.sh
+```
+
+If you want to keep your system clean, you can prune the unused images by including the `--prune` parameter.
+
+```
+cd ~/media-center/
+./update.sh --prune
+```
+
 
 # Going extra
 ## Dashboard
