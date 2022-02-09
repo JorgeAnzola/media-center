@@ -118,7 +118,7 @@ Transmission is a cross-platform BitTorrent client. [read more](https://transmis
 		width="22"
 		alt="Prowlarr logo"
 		src="https://raw.githubusercontent.com/JorgeAnzola/media-center/master/assets/icons/prowlarr.png">
-    Jackett
+    Prowlarr
 </h2>
 
 Prowlarr works as a proxy server: it translates queries from apps (like Sonarr or Radarr) into tracker-site-specific http queries, parses the html response, then sends results back to the requesting software. [read more](https://github.com/prowlarr/prowlarr)
