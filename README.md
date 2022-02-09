@@ -25,8 +25,8 @@
     - [Installation](#installation)
     - [Configuration](#configuration)
       - [Setting up Transmission](#setting-up-transmission)
-      - [Setting up Jackett](#setting-up-jackett)
       - [Setting up Radarr/Sonarr](#setting-up-radarr-sonarr)
+	  - [Setting up Prowlarr](#setting-up-prowlarr)
       - [Setting up Plex](#setting-up-plex)
       - [Setting up Tautulli](#setting-up-tautulli)
     - [Booting up](#booting-up)
@@ -116,18 +116,18 @@ Transmission is a cross-platform BitTorrent client. [read more](https://transmis
 <h2>
 	<img
 		width="22"
-		alt="Jackett logo"
-		src="https://raw.githubusercontent.com/JorgeAnzola/media-center/master/assets/icons/jackett.png">
+		alt="Prowlarr logo"
+		src="https://raw.githubusercontent.com/JorgeAnzola/media-center/master/assets/icons/prowlarr.png">
     Jackett
 </h2>
 
-Jackett works as a proxy server: it translates queries from apps (like Sonarr or Radarr) into tracker-site-specific http queries, parses the html response, then sends results back to the requesting software. [read more](https://github.com/Jackett/Jackett)
+Prowlarr works as a proxy server: it translates queries from apps (like Sonarr or Radarr) into tracker-site-specific http queries, parses the html response, then sends results back to the requesting software. [read more](https://github.com/prowlarr/prowlarr)
 
 **TL;DR: to get the torrent files.**
 
 <div align="center">
 	<img
-		src="https://raw.githubusercontent.com/JorgeAnzola/media-center/master/assets/screenshots/jackett.jpg">
+		src="https://raw.githubusercontent.com/JorgeAnzola/media-center/master/assets/screenshots/prowlarr.jpg">
     <br/>
 </div>
 
@@ -179,28 +179,11 @@ Furthermore, each app require some minor configuration steps
 ### Setting up Transmission
 No extra configuration should be required for Transmission.
 
-### Setting up Jackett
-Not really setting up Jackett, but to add the indexers. Go to http://your-server-ip-address:9117.
-Click the **Add indexer** button, a frame will popup, in there look for the provider you'd like to add and click the plus button.
-You can add as many as you want.
-
-You can copy the indexer URL by clicking the **Copy Torznab Feed**
-
 ### Setting up Radarr/Sonarr
 The guide refers to Radarr, but all these settings you can be (and need to be) replicated on Sonarr.
 
 #### Adding Indexers
-
-- Go into Settings > Indexers
-- Click the Plus button.
-- Click the Torznab button
-- Add a name
-- Add the URL copied from Jackett. You can replace the IP address with the word `jackett` as they are in the same Docker network
-- Add the API key from Jackett.
-- Select the proper categories.
-- Click test to make sure everything is ok.
-- Click save
-- Repeat for all the indexers you have
+The indexers will be automagically added by Prowlarr (See [Setting up Prowlarr](#setting-up-prowlarr)).
 
 #### Add a download client (Transmission)
 
@@ -225,6 +208,16 @@ And everything you add there will be downloaded automatically. You can define di
 #### Size limit (Optional)
 With all these automagic things going on, might happen that Radarr tries to download a 60gb 1080p movie.
 If you like to avoid this, you can set up your quality preferences (Settings > Quality), or directly in the indexers, go into Settings > Indexers and set up a **Maximum Size**.
+
+### Setting up Prowlarr
+Go to http://your-server-ip-address:9696.
+Click the **Add indexer** button, a frame will popup, in there look for the provider you'd like to add and click on it. A second frame will show up, in there you can
+modify the settings of the indexers.
+For public indexers you won't need extra steps, usually. Just verify that the Enable option is checked. Click test and if it's succesful, click save.
+You can add as many as you want.
+Once you have all the indexers click 'Settings' in the left side panel, then Apps. 
+Here you will add Radarr. Click on the plus button in the Applications section choose Radarr. You will need the ApiKey, go to your Radarr instance, Settings > General and copy the API key under the security section, you can now test and save.  
+Repeat the same process for Sonarr.
 
 ### Setting up Plex
 Go through the wizard for the time first configuration, and create an account if you don't have one.

@@ -61,19 +61,17 @@ services:
       - 8989:8989
     restart: unless-stopped
 
-  jackett:
-    image: ghcr.io/linuxserver/jackett
-    container_name: jackett
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Amsterdam
-      - AUTO_UPDATE=true
     volumes:
-      - ~/media-center/jackett/config:/config
-      - ~/media-center/jackett/blackhole:/downloads
+      - ~/media-center/prowlarr/config:/config
     ports:
-      - 9117:9117
+      - 9696:9696
     restart: unless-stopped
 
   tautulli:
